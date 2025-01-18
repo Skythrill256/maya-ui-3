@@ -25,8 +25,8 @@ export function NavBar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-14 items-center justify-between px-4">
+        {/* Left section with logo and mobile menu */}
         <div className="flex items-center gap-4">
-          {/* Mobile Menu Trigger */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon" className="mr-2">
@@ -53,7 +53,6 @@ export function NavBar() {
             </SheetContent>
           </Sheet>
 
-          {/* Logo */}
           <Link href="/" className="flex items-center">
             <span className="text-xl font-bold tracking-widest">M A Y A</span>
           </Link>
@@ -74,21 +73,65 @@ export function NavBar() {
 
         {/* Connect Wallet & User Menu */}
         <div className="flex items-center gap-2">
-          <div className="hidden sm:block">
-            <ConnectButton />
+          <div>
+            <ConnectButton.Custom>
+              {({
+                account,
+                chain,
+                openAccountModal,
+                openChainModal,
+                openConnectModal,
+                mounted,
+              }) => {
+                const ready = mounted
+                if (!ready) return null
+                
+                return (
+                  <div>
+                    {(() => {
+                      if (!mounted || !account || !chain) {
+                        return (
+                          <Button
+                            onClick={openConnectModal}
+                            className="bg-black text-white hover:bg-gray-800 rounded-full"
+                          >
+                            Connect Wallet
+                          </Button>
+                        )
+                      }
+                      if (chain.unsupported) {
+                        return (
+                          <Button
+                            onClick={openChainModal}
+                            className="bg-red-500 text-white hover:bg-red-600 rounded-full"
+                          >
+                            Wrong network
+                          </Button>
+                        )
+                      }
+                      return (
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={openChainModal}
+                            className="bg-black text-white hover:bg-gray-800 rounded-full px-4"
+                          >
+                            {chain.name}
+                          </Button>
+                          <Button
+                            onClick={openAccountModal}
+                            className="bg-black text-white hover:bg-gray-800 rounded-full px-4"
+                          >
+                            {account.displayName}
+                          </Button>
+                        </div>
+                      )
+                    })()}
+                  </div>
+                )
+              }}
+            </ConnectButton.Custom>
           </div>
-          <Sheet>
-            <SheetTrigger asChild className="sm:hidden">
-              <Button variant="outline" size="sm">
-                Connect
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <div className="mt-4">
-                <ConnectButton />
-              </div>
-            </SheetContent>
-          </Sheet>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
