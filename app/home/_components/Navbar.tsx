@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/main/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/main/sheet"
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { darkTheme } from '@rainbow-me/rainbowkit'
+import Image from 'next/image'
 
 const navItems = [
   { href: "/home/consensus", label: "Consensus" },
@@ -19,15 +19,6 @@ const navItems = [
   { href: "/home/network-state", label: "Network-State" },
   { href: "/home/leaderboard", label: "Leaderboard" },
 ]
-
-// Custom theme configuration
-const customDarkTheme = darkTheme({
-  accentColor: '#000000',
-  accentColorForeground: 'white',
-  borderRadius: 'large', // Updated to large for more rounded corners
-  fontStack: 'system',
-  overlayBlur: 'small',
-});
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -130,13 +121,12 @@ export function NavBar() {
                         >
                           {chain.hasIcon && (
                             <div style={{ width: 16, height: 16, marginRight: 4 }}>
-                              {chain.iconUrl && (
-                                <img
-                                  alt={chain.name ?? 'Chain icon'}
-                                  src={chain.iconUrl}
-                                  style={{ width: 16, height: 16 }}
-                                />
-                              )}
+                              <Image
+                                src={chain.iconUrl ?? "/placeholder.svg"}
+                                alt={chain.name ?? 'Chain icon'}
+                                width={16}
+                                height={16}
+                              />
                             </div>
                           )}
                           {chain.name}

@@ -80,7 +80,7 @@ export default function NetworkStatePage() {
   const [localProposals, setLocalProposals] = useState<Proposal[]>(proposals)
   const [isCreateProposalOpen, setIsCreateProposalOpen] = useState(false)
   const params = useParams()
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState('')
   
   const state = networkStates.find((s) => s.id === parseInt(params.id as string))
 
@@ -130,7 +130,7 @@ export default function NetworkStatePage() {
           <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
               <Image
-                src={state.logo}
+                src={state.logo ?? "/placeholder.svg"}
                 alt={state.name}
                 width={32}
                 height={32}
@@ -147,6 +147,8 @@ export default function NetworkStatePage() {
                 <Input
                   className="pl-10 w-full bg-gray-900 border-gray-800 text-white placeholder:text-gray-500"
                   placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <Sheet open={isCreateProposalOpen} onOpenChange={setIsCreateProposalOpen}>
