@@ -13,7 +13,6 @@ interface CreateProposalFormProps {
     description: string
     startTime: string
     endTime: string
-    votingEnds: string
   }) => void
 }
 
@@ -22,11 +21,10 @@ export function CreateProposalForm({ onSubmit }: CreateProposalFormProps) {
   const [description, setDescription] = useState("")
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
-  const [votingEnds, setVotingEnds] = useState("")
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit({ question, description, startTime, endTime, votingEnds })
+    onSubmit({ question, description, startTime, endTime })
   }
 
   return (
@@ -98,24 +96,6 @@ export function CreateProposalForm({ onSubmit }: CreateProposalFormProps) {
                   className="w-full"
                 />
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="votingEnds">Voting Duration</Label>
-              <select 
-                id="votingEnds"
-                value={votingEnds}
-                onChange={(e) => setVotingEnds(e.target.value)}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                required
-              >
-                <option value="">Select duration</option>
-                <option value="1 day">1 day</option>
-                <option value="3 days">3 days</option>
-                <option value="1 week">1 week</option>
-                <option value="2 weeks">2 weeks</option>
-                <option value="1 month">1 month</option>
-              </select>
             </div>
           </div>
 

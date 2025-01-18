@@ -106,18 +106,31 @@ export default function NetworkStatePage() {
     description: string
     startTime: string
     endTime: string
-    votingEnds: string
   }) => {
     const newProposal: Proposal = {
       id: localProposals.length + 1,
       ...proposalData,
       votes: 0,
       networkState: state?.name || "DeSci",
-      logo: state?.logo || "/placeholder.svg"
+      logo: state?.logo || "/placeholder.svg",
+      votingEnds: calculateVotingEnds(proposalData.endTime)
     }
 
     setLocalProposals(prev => [...prev, newProposal])
     setIsCreateProposalOpen(false)
+  }
+
+  // Helper function to calculate voting ends display string
+  const calculateVotingEnds = (endTime: string): string => {
+    const end = new Date(endTime)
+    const now = new Date()
+    const diffDays = Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+    
+    if (diffDays <= 1) return "1 day"
+    if (diffDays <= 3) return "3 days"
+    if (diffDays <= 7) return "1 week"
+    if (diffDays <= 14) return "2 weeks"
+    return "1 month"
   }
 
   if (!state) return <div>Network State not found</div>
